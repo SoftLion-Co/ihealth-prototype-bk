@@ -22,7 +22,7 @@ router.put("/order/:id", OrderController.updateOrder);
 router.delete("/order/:id", OrderController.deleteOrder);
 
 //Products
-router.get("/product", ProductController.fetchProducts);
+router.get("/product", ProductController.getProducts);
 router.get("/product/:id/metafields", ProductController.getProductWithMetafields);
 
 //Certificates

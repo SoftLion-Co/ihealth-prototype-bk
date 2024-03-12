@@ -1,4 +1,4 @@
-const { executeGraphqlQuery } = require("../generic/service/graphqlHelper");
+const { executeGraphqlQuery } = require("../generic/service/graphQLService");
 
 class CertificateService {
   async getCertificateById(Id) {

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../../config/config');
 
-class Database {
+class DBContext {
   constructor() {
     this.connect();
   }
@@ -13,4 +13,5 @@ class Database {
   }
 }
 
-module.exports = new Database();
+const dbContext = new DBContext();
+module.exports = dbContext;
