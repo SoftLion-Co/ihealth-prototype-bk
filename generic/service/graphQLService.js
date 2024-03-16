@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
-require('dotenv').config();
+const config = require('../../config/config');
 
-const { SHOP_NAME, PASSWORD } = process.env;
-const graphqlEndpoint = `https://${SHOP_NAME}.myshopify.com/admin/api/2023-01/graphql.json`;
+const graphqlEndpoint = `https://${config.shopify.shopName}.myshopify.com/admin/api/2023-01/graphql.json`;
 
 async function executeGraphqlQuery(query) {
     try {
@@ -10,7 +9,7 @@ async function executeGraphqlQuery(query) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Shopify-Access-Token': PASSWORD,
+                'X-Shopify-Access-Token': config.shopify.password,
             },
             body: JSON.stringify({ query }),
         });

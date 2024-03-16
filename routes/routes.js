@@ -8,6 +8,8 @@ const userController = require("../controllers/user-controller");
 const authMiddleware = require("../middlewares/auth-middleware");
 const router = require("express").Router();
 
+
+//Authentification
 router.post(
   "/registration",
   body("email").isEmail(),

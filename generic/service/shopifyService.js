@@ -1,6 +1,5 @@
 const Shopify = require("shopify-api-node");
-const dotenv = require("dotenv");
-dotenv.config();
+const config = require('../../config/config');
 
 class ShopifyService {
   constructor() {
@@ -9,9 +8,9 @@ class ShopifyService {
 
   createShopify() {
     return new Shopify({
-      shopName: process.env.SHOP_NAME,
-      apiKey: process.env.API_KEY,
-      password: process.env.PASSWORD,
+      shopName: config.shopify.shopName,
+      apiKey: config.shopify.apiKey,
+      password: config.shopify.password,
     });
   }
 }

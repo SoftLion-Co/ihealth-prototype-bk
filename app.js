@@ -1,13 +1,12 @@
-require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const router = require("./routes/routes");
 const errorMiddleware = require("./middlewares/error-middleware");
+const dbContext = require("./generic/database/dbContext");
+const config = require('./config/config');
 
-const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(cors());
@@ -18,9 +17,9 @@ app.use(errorMiddleware);
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.DB_URL);
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+    dbContext.connect();		
+    app.listen(config.server.port, () => {
+      console.log(`Server is running on port ${config.server.port}`);
     });
   } catch (e) {
     console.log(e);
