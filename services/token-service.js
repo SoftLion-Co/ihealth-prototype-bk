@@ -1,25 +1,25 @@
 const { sign, verify } = require("jsonwebtoken");
-const TokenModel = require("../models/token-model");
 const tokenModel = require("../models/token-model");
+const config = require("../config/config");
 
 class TokenService {
   generateTokens(payload) {
-    const accessToken = sign(payload, process.env.JWT_ACCESS_KEY, {
+    const accessToken = sign(payload, config.auth.jwtAccessKey, {
       expiresIn: "30m",
     });
-    const refreshToken = sign(payload, process.env.JWT_REFRESH_KEY, {
+    const refreshToken = sign(payload, config.auth.jwtRefreshKey, {
       expiresIn: "30d",
     });
 
     return { accessToken, refreshToken };
   }
   async saveToken(user, refreshToken) {
-    const tokenData = await TokenModel.findOne({ user });
+    const tokenData = await tokenModel.findOne({ user });
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return tokenData.save();
     }
-    const token = await TokenModel.create({ user, refreshToken });
+    const token = await tokenModel.create({ user, refreshToken });
     return token;
   }
   async removeToken(refreshToken) {
@@ -29,7 +29,7 @@ class TokenService {
 
   validateAccessToken(token) {
     try {
-      const userData = verify(token, process.env.JWT_ACCESS_KEY);
+      const userData = verify(token, config.auth.jwtAccessKey);
       return userData;
     } catch (error) {
       return null;
@@ -38,7 +38,7 @@ class TokenService {
 
   validateRefreshToken(token) {
     try {
-      const userData = verify(token, process.env.JWT_REFRESH_KEY);
+      const userData = verify(token, config.auth.jwtRefreshKey);
       return userData;
     } catch (error) {
       return null;
