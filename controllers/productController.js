@@ -1,9 +1,9 @@
-const ProductService = require("../services/productService");
+const productService = require("../services/productService");
 
 class ProductController {
   async getProducts(req, res) {
     try {
-      const products = await ProductService.getAllProducts();
+      const products = await productService.getAllProducts();
       res.json(products);
     } catch (error) {
       console.error(error);
@@ -14,7 +14,7 @@ class ProductController {
   async getProductWithMetafields(req, res) {
     try {
       const productId = req.params.id;
-      const productWithMetafields = await ProductService.getProductWithMetafields(productId);
+      const productWithMetafields = await productService.getProductWithMetafields(productId);
       res.send(productWithMetafields);
     } catch (error) {
       console.error(error);
