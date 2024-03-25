@@ -16,7 +16,7 @@ class CertificateService {
 
     try {
       const data = await executeGraphqlQuery(query);
-      return data.certificate;
+      return data;
     } catch (error) {
       console.error(error);
       throw error;

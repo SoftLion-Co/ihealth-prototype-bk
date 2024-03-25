@@ -1,12 +1,14 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/user-model");
 const { v4 } = require("uuid");
-const mailService = require("./mail-service");
+const mailService = require("./mailSenderService");
 const tokenService = require("./token-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../middlewares/api-error");
+const config = require("../config/config")
 
 class UserService {
+
   async registration(email, password) {
     const candidate = await UserModel.findOne({ email });
     if (candidate) {
@@ -15,7 +17,7 @@ class UserService {
     const activationLink = v4();
     await mailService.sendActivationMail(
       email,
-      `${process.env.API_URL}/api/activate/${activationLink}`
+      `${config.server.apiUrl}/activate/${activationLink}`
     );
 
     const user = await UserModel.create({
@@ -57,10 +59,12 @@ class UserService {
 
     return { ...tokens, user: userDto };
   }
+
   async logout(refreshToken) {
     await tokenService.removeToken(refreshToken);
     return;
   }
+
   async refresh(refreshToken) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError("No client refresh tokens");
@@ -83,6 +87,7 @@ class UserService {
     const user = await UserModel.findOne({ email });
     return user;
   }
+  
 }
 
 module.exports = new UserService();
