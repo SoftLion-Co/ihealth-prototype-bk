@@ -1,13 +1,18 @@
-const OrderController = require("../controllers/orderController");
-const ProductController = require("../controllers/productController");
-const CustomerController = require("../controllers/customerController");
-const CertificateController = require("../controllers/certificateController");
-
 const { body } = require("express-validator");
 const userController = require("../controllers/user-controller");
 const authMiddleware = require("../middlewares/auth-middleware");
 const router = require("express").Router();
 
+const BlogController = require("../controllers/blogController");
+const OrderController = require("../controllers/orderController");
+const ProductController = require("../controllers/productController");
+const CustomerController = require("../controllers/customerController");
+const CertificateController = require("../controllers/certificateController");
+const SubscriptionController = require("../controllers/subscriptionController"); 
+
+router.get("/", (req, res) => {
+	res.send("Виберіть маршрут");
+ });
 
 //Authentification
 router.post(
@@ -22,9 +27,17 @@ router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users/:email", authMiddleware, userController.getUsers);
 
+//Subscribe
+router.post("/newsletter/send", SubscriptionController.sendEmailNewsletter);
+router.post("/newsletter/receiver", SubscriptionController.addNewReceiver);
+
 //Customers
 router.get("/customer", CustomerController.listCustomers);
 router.get("/customer/:id", CustomerController.getCustomerById);
+
+//Blogs
+router.get("/blog", BlogController.getBlogs);
+router.get("/blog/:id", BlogController.getBlogById);
 
 //Orders
 router.get("/order", OrderController.listOrders);

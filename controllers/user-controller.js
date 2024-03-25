@@ -1,6 +1,4 @@
-const { json } = require("express");
 const UserService = require("../services/user-service");
-const userService = require("../services/user-service");
 const { validationResult } = require("express-validator");
 const ApiError = require("../middlewares/api-error");
 
@@ -22,6 +20,7 @@ class UserController {
       next(e);
     }
   }
+
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
@@ -35,25 +34,28 @@ class UserController {
       next(e);
     }
   }
+
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      await userService.logout(refreshToken);
+      await UserService.logout(refreshToken);
       res.clearCookie("refreshToken");
       return res.json({ message: "Logout successful" });
     } catch (e) {
       next(e);
     }
   }
+
   async activate(req, res, next) {
     try {
       const activationLink = req.params.link;
-      await userService.activate(activationLink);
-      return res.redirect(process.env.CLIENT_URL);
+      await UserService.activate(activationLink);
+      return res.redirect();
     } catch (e) {
       next(e);
     }
   }
+
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
@@ -67,10 +69,11 @@ class UserController {
       next(e);
     }
   }
+
   async getUsers(req, res, next) {
     try {
       const email = req.params.email;
-      const user = await userService.getByEmail(email);
+      const user = await UserService.getByEmail(email);
       return res.json(user);
     } catch (e) {
       next(e);
