@@ -1,6 +1,5 @@
 const { json } = require("express");
 const UserService = require("../services/user-service");
-const userService = require("../services/user-service");
 const { validationResult } = require("express-validator");
 const ApiError = require("../middlewares/api-error");
 
@@ -11,8 +10,13 @@ class UserController {
       if (!errors.isEmpty()) {
         return next(ApiError.BadRequest("Invalid data", errors));
       }
-      const { email, password } = req.body;
-      const userData = await UserService.registration(email, password);
+      const { firstName, lastName, email, password } = req.body;
+      const userData = await UserService.registration(
+        firstName,
+        lastName,
+        email,
+        password
+      );
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -38,7 +42,7 @@ class UserController {
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      await userService.logout(refreshToken);
+      await UserService.logout(refreshToken);
       res.clearCookie("refreshToken");
       return res.json({ message: "Logout successful" });
     } catch (e) {
@@ -48,8 +52,8 @@ class UserController {
   async activate(req, res, next) {
     try {
       const activationLink = req.params.link;
-      await userService.activate(activationLink);
-      return res.redirect(process.env.CLIENT_URL);
+      await UserService.activate(activationLink);
+      return res.redirect(`${process.env.CLIENT_URL}/profile`);
     } catch (e) {
       next(e);
     }
@@ -70,7 +74,7 @@ class UserController {
   async getUsers(req, res, next) {
     try {
       const email = req.params.email;
-      const user = await userService.getByEmail(email);
+      const user = await UserService.getByEmail(email);
       return res.json(user);
     } catch (e) {
       next(e);
