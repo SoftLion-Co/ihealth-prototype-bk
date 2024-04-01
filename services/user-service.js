@@ -9,23 +9,27 @@ const { default: axios } = require("axios");
 const qs = require("qs");
 
 class UserService {
-  async registration(firstName, lastName, email, password) {
+  async registration(firstName, lastName, email, password, authType) {
     const candidate = await UserModel.findOne({ email });
     if (candidate) {
       throw ApiError.BadRequest(`User with email ${email} already exists`);
     }
     const activationLink = v4();
-    await mailService.sendActivationMail(
-      email,
-      `${process.env.API_URL}/api/activate/${activationLink}`
-    );
+    if (password) {
+      await mailService.sendActivationMail(
+        email,
+        `${process.env.API_URL}/api/activate/${activationLink}`
+      );
+    }
 
     const user = await UserModel.create({
       firstName,
       lastName,
       email,
-      password: bcrypt.hashSync(password, 10),
-      activationLink,
+      password: password ? bcrypt.hashSync(password, 10) : null,
+      activationLink: password ? activationLink : null,
+      isActivated: true,
+      authType,
     });
 
     const userDto = new UserDto(user);
@@ -51,11 +55,14 @@ class UserService {
         `User with email ${email} does not exist`
       );
     }
-    if (!bcrypt.compareSync(password, user.password)) {
-      throw ApiError.UnauthorizedError("Invalid password");
+    const userDto = new UserDto(user);
+    if (password) {
+      //add data vavidation to endpoints
+      if (!bcrypt.compareSync(password, user.password)) {
+        throw ApiError.UnauthorizedError("Invalid password");
+      }
     }
 
-    const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
@@ -104,6 +111,32 @@ class UserService {
       });
       const { id_token } = res.data;
       return id_token;
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+  async githubAuth(code) {
+    const tokenUrl = "https://github.com/login/oauth/access_token";
+    const userUrl = "https://api.github.com/user";
+    const values = {
+      client_id: process.env.GITHUB_CLIENT,
+      client_secret: process.env.GITHUB_KEY,
+      code,
+    };
+    try {
+      const token = await axios.post(tokenUrl, qs.stringify(values), {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const { access_token } = token.data;
+      console.log(access_token);
+      const res = await axios.get(userUrl, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return res.data;
     } catch (error) {
       console.log(error.response);
     }

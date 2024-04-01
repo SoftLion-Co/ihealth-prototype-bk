@@ -1,4 +1,3 @@
-const { json } = require("express");
 const UserService = require("../services/user-service");
 const { validationResult } = require("express-validator");
 const ApiError = require("../middlewares/api-error");

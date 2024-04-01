@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 const userController = require("../controllers/user-controller");
-const googleController = require("../controllers/google-controller");
+const foreignAuthController = require("../controllers/foreign-auth-controller");
 const router = require("express").Router();
 
 router.post(
@@ -14,6 +14,7 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users/:email", userController.getUsers);
-router.get("/auth/google", googleController.authHandler);
+router.get("/auth/google", foreignAuthController.google);
+router.get("/auth/github", foreignAuthController.github);
 
 module.exports = router;

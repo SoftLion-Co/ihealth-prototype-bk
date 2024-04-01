@@ -11,5 +11,6 @@ module.exports = class UserDto {
     this.firstName = model.firstName;
     this.lastName = model.lastName;
     this.isActivated = model.isActivated;
+    this.authType = model.authType;
   }
 };
