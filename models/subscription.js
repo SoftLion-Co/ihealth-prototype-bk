@@ -6,4 +6,4 @@ const subscriptionSchema = new Schema({
   created_at: Date
 });
 
-module.exports = model('Subscription', subscriptionSchema);
+module.exports = model('subscription', subscriptionSchema);
