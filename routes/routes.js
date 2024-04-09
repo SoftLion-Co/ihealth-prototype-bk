@@ -41,7 +41,6 @@ router.post("/comment", CommentController.createComment);
 router.put("/comment/:id", CommentController.updateComment);
 router.delete("/comment/:id", CommentController.deleteComment);
 
-
 //Subscribe
 router.post("/newsletter/send", SubscriptionController.sendEmailNewsletter);
 router.post("/newsletter/receiver", SubscriptionController.addNewReceiver);
