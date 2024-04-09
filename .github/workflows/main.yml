@@ -26,3 +26,11 @@ jobs:
 
     - name: Test
       run: npm test
+
+    - name: Cancel workflow on failure
+      if: failure()
+      run: |
+        echo "The workflow has failed. Cancelling the commit..."
+        git reset --soft HEAD^
+        git commit -m "Automatically cancelled the commit due to workflow failure"
+        git push --force
