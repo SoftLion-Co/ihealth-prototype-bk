@@ -34,5 +34,3 @@ jobs:
         git reset --soft HEAD^
         git commit -m "Automatically cancelled the commit due to workflow failure"
         git push --force
-		
-		
