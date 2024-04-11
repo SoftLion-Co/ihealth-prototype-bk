@@ -9,6 +9,19 @@ const { default: axios } = require("axios");
 const qs = require("qs");
 
 class UserService {
+  async edit(firstName, lastName, email, password, authType) {
+    const candidate = await UserModel.findOne({ email });
+    if (candidate) {
+      throw ApiError.BadRequest(`User with email ${email} already exists`);
+    }
+    const activationLink = v4();
+    if (password) {
+      await mailService.sendActivationMail(
+        email,
+        `${process.env.API_URL}/api/activate/${activationLink}`
+      );
+    }}
+
   async registration(firstName, lastName, email, password, authType) {
     const candidate = await UserModel.findOne({ email });
     if (candidate) {
@@ -45,6 +58,7 @@ class UserService {
       throw ApiError.BadRequest("Invalid link");
     }
     user.isActivated = true;
+    user.activationLink = null;
     await user.save();
   }
 

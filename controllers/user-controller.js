@@ -7,7 +7,7 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest("Invalid data", errors));
+        return next(ApiError.BadRequest("Invalid data", errors.array()));
       }
       const { firstName, lastName, email, password } = req.body;
       const userData = await UserService.registration(
