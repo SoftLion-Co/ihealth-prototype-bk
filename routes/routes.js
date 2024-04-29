@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
-const userController = require("../controllers/user-controller");
+const userController = require("../controllers/userController");
+const authMiddleware = require("../middlewares/authMiddleware");
 const foreignAuthController = require("../controllers/foreign-auth-controller");
 const router = require("express").Router();
 
@@ -29,19 +30,19 @@ router.get("/users/:email", userController.getUsers);
 router.get("/auth/google", foreignAuthController.google);
 router.get("/auth/github", foreignAuthController.github);
 
-// Review
-router.get("/review", ReviewController.listReviews);
-router.get("/review/:id", ReviewController.getReviewById);
-router.post("/review", ReviewController.createReview);
-router.put("/review/:id", ReviewController.updateReview);
-router.delete("/review/:id", ReviewController.deleteReview);
+// // Review
+// router.get("/review", ReviewController.listReviews);
+// router.get("/review/:id", ReviewController.getReviewById);
+// router.post("/review", ReviewController.createReview);
+// router.put("/review/:id", ReviewController.updateReview);
+// router.delete("/review/:id", ReviewController.deleteReview);
 
-// Comment
-router.get("/comment", CommentController.listComments);
-router.get("/comment/:id", CommentController.getCommentById);
-router.post("/comment", CommentController.createComment);
-router.put("/comment/:id", CommentController.updateComment);
-router.delete("/comment/:id", CommentController.deleteComment);
+// // Comment
+// router.get("/comment", CommentController.listComments);
+// router.get("/comment/:id", CommentController.getCommentById);
+// router.post("/comment", CommentController.createComment);
+// router.put("/comment/:id", CommentController.updateComment);
+// router.delete("/comment/:id", CommentController.deleteComment);
 
 //Subscribe
 router.post("/newsletter/send", SubscriptionController.sendEmailNewsletter);

@@ -1,6 +1,6 @@
-const UserService = require("../services/user-service");
+const UserService = require("../services/userService");
 const { validationResult } = require("express-validator");
-const ApiError = require("../middlewares/api-error");
+const ApiError = require("../middlewares/apiError");
 
 class UserController {
   async registration(req, res, next) {

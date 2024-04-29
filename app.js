@@ -4,8 +4,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./routes/routes");
 const checkOrigin = require("./middlewares/request-origin");
-const errorMiddleware = require("./middlewares/error-middleware");
-const authMiddleware = require("./middlewares/auth-middleware");
+const errorMiddleware = require("./middlewares/errorMiddleware");
+const authMiddleware = require("./middlewares/authMiddleware");
 const dbContext = require("./generic/database/dbContext");
 const config = require('./config/config');
 
