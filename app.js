@@ -3,14 +3,22 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./routes/routes");
+const checkOrigin = require("./middlewares/request-origin");
 const errorMiddleware = require("./middlewares/error-middleware");
+const authMiddleware = require("./middlewares/auth-middleware");
 const dbContext = require("./generic/database/dbContext");
 const config = require('./config/config');
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 app.use(express.json());
+app.use(checkOrigin);
 app.use(cookieParser());
 app.use("/", router);
 app.use(errorMiddleware);

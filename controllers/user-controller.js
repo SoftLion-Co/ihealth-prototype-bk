@@ -7,10 +7,15 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest("Invalid data", errors));
+        return next(ApiError.BadRequest("Invalid data", errors.array()));
       }
-      const { email, password } = req.body;
-      const userData = await UserService.registration(email, password);
+      const { firstName, lastName, email, password } = req.body;
+      const userData = await UserService.registration(
+        firstName,
+        lastName,
+        email,
+        password
+      );
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -50,7 +55,7 @@ class UserController {
     try {
       const activationLink = req.params.link;
       await UserService.activate(activationLink);
-      return res.redirect();
+      return res.redirect(`${process.env.CLIENT_URL}/profile`);
     } catch (e) {
       next(e);
     }
