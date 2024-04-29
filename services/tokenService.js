@@ -1,5 +1,5 @@
 const { sign, verify } = require("jsonwebtoken");
-const tokenModel = require("../models/token-model");
+const tokenModel = require("../models/tokenModel");
 const config = require("../config/config");
 
 class TokenService {
