@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/user-model");
 const { v4 } = require("uuid");
-const mailService = require("./mail-service");
+const mailService = require("./mailSenderService");
 const tokenService = require("./token-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../middlewares/api-error");
@@ -82,10 +82,12 @@ class UserService {
 
     return { ...tokens, user: userDto };
   }
+
   async logout(refreshToken) {
     await tokenService.removeToken(refreshToken);
     return;
   }
+
   async refresh(refreshToken) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError("No client refresh tokens");
@@ -108,6 +110,7 @@ class UserService {
     const user = await UserModel.findOne({ email });
     return user;
   }
+  
   async googleAuth(code) {
     const url = "https://oauth2.googleapis.com/token";
     const values = {
@@ -158,3 +161,4 @@ class UserService {
 }
 
 module.exports = new UserService();
+
