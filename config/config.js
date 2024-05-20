@@ -16,7 +16,8 @@ module.exports = {
   shopify: {
     shopName: process.env.SHOP_NAME,
     apiKey: process.env.API_KEY,
-    password: process.env.PASSWORD,
+    apiSecretKey: process.env.API_SECRET_KEY,
+	 password: process.env.API_ACCESS_TOKEN
   },
 
   smtp: {

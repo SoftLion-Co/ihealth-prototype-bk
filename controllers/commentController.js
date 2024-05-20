@@ -1,9 +1,9 @@
-const commentService = require("../services/commentService");
+const CommentService = require("../services/СommetService");
 
 class CommentController {
   async listComments(req, res) {
     try {
-      const comments = await commentService.listComments();
+      const comments = await CommentService.listComments();
       res.send(comments);
     } catch (error) {
       console.error(error);
@@ -13,7 +13,7 @@ class CommentController {
 
   async getCommentById(req, res) {
     try {
-      const comment = await commentService.getCommentById(req.params.id);
+      const comment = await CommentService.getCommentById(req.params.id);
       res.send(comment);
     } catch (error) {
       console.error(error);
@@ -24,7 +24,7 @@ class CommentController {
   async createComment(req, res) {
     try {
       const commentData = req.body;
-      const newComment = await commentService.createComment(commentData);
+      const newComment = await CommentService.createComment(commentData);
       res.status(201).send(newComment);
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ class CommentController {
     try {
       const commentId = req.params.id;
       const updatedData = req.body;
-      const updatedComment = await commentService.updateComment(commentId, updatedData);
+      const updatedComment = await CommentService.updateComment(commentId, updatedData);
       res.send(updatedComment);
     } catch (error) {
       console.error(error);
@@ -47,7 +47,7 @@ class CommentController {
   async deleteComment(req, res) {
     try {
       const commentId = req.params.id;
-      const deletedComment = await commentService.deleteComment(commentId);
+      const deletedComment = await CommentService.deleteComment(commentId);
       res.send(deletedComment);
     } catch (error) {
       console.error(error);

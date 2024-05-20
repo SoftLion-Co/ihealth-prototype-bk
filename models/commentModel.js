@@ -1,10 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema({
-  id: String,
+	blog_post_id:String,
   name:String,
   created_at: Date,
-  email: Number,
+  email: String,
   text: String
 });
 
