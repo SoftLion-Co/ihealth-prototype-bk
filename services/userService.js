@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/userModel");
 const { v4 } = require("uuid");
-const mailService = require("./mailSenderService");
-const tokenService = require("./tokenService");
+const mailService = require("./MailSenderService");
+const tokenService = require("./TokenService");
 const UserDto = require("../dtos/UserDto");
 const ApiError = require("../middlewares/apiError");
 const { default: axios } = require("axios");

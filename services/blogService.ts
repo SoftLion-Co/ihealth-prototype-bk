@@ -1,4 +1,4 @@
-const { executeGraphqlQuery } = require("../generic/service/graphQLService");
+const { executeGraphqlQuery: executeBlogGraphqlQuery } = require("../generic/service/graphQLService");
 
 interface Paragraph {
   id: string;
@@ -81,7 +81,7 @@ class BlogService {
 	}
  `;
     try {
-      const data = await executeGraphqlQuery(query);
+      const data = await executeBlogGraphqlQuery(query);
       const blogPost: BlogPost = {
         id: data.metaobject.id,
         displayName: data.metaobject.displayName,
@@ -140,7 +140,7 @@ class BlogService {
 		 }
 	  }
 	  `;
-      const paragraphData = await executeGraphqlQuery(paragraphQuery);
+      const paragraphData = await executeBlogGraphqlQuery(paragraphQuery);
       paragraphs.push(this.transformParagraph(paragraphData.metaobject));
     }
     return paragraphs;
@@ -220,7 +220,7 @@ class BlogService {
 	}
 	`;
     try {
-      const data = await executeGraphqlQuery(query);
+      const data = await executeBlogGraphqlQuery(query);
       const blogPosts: BlogPost[] = [];
 
       for (const edge of data.metaobjects.edges) {
@@ -315,7 +315,7 @@ class BlogService {
 	`;
 
     try {
-      const data = await executeGraphqlQuery(query);
+      const data = await executeBlogGraphqlQuery(query);
       const blogPosts: BlogPostShort[] = [];
 
       for (const edge of data.metaobjects.edges) {

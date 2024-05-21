@@ -1,6 +1,19 @@
 const ReviewService = require("../services/ReviewService");
 
 class ReviewController {
+	async getReviewsByProductId(req, res) {
+		try {
+		  const productId = req.params.productId;
+		  const limit = parseInt(req.query.limit) || 10;
+		  const page = parseInt(req.query.page) || 1;
+		  const reviews = await ReviewService.getReviewsByProductId(productId, limit, page);
+		  res.send(reviews);
+		} catch (error) {
+		  console.error(`Error fetching reviews for product ${req.params.productId}:`, error);
+		  res.status(500).send("Internal Server Error");
+		}
+	 }
+	 
   async listReviews(req, res) {
     try {
       const reviews = await ReviewService.listReviews();

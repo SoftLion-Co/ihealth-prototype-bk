@@ -1,4 +1,4 @@
-const certificateService = require("../services/certificate-service");
+const certificateService = require("../services/CertificateService");
 
 class CertificateController {
   async getCertificateById(req, res) {

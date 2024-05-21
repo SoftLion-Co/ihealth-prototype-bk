@@ -8,4 +8,4 @@ const reviewSchema = new Schema({
   text: String,
 });
 
-module.exports = model("review", reviewSchema);
+module.exports = model('Review', reviewSchema, 'Review');

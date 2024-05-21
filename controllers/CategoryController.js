@@ -1,9 +1,9 @@
 const categoryService = require("../services/CategoryService");
 
 class CategoryController {
-  async listCategories(req, res) {
+  async getAllCategories(req, res) {
     try {
-      const categories = await categoryService.listCategories();
+      const categories = await categoryService.getAllCategories();
       res.send(categories);
     } catch (error) {
       console.error(error);
