@@ -2,13 +2,13 @@ const configuration = require("./config/config");
 
 const config = {
   mongodb: {
-    url: configuration.database.url,
+    url: configuration.database.uri,
     databaseName: "Shop",
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // connectTimeoutMS: 3600000,
-      // socketTimeoutMS: 3600000,
+      connectTimeoutMS: 3600000,
+      socketTimeoutMS: 3600000,
     },
   },
   migrationsDir: "migrations",

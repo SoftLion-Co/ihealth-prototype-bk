@@ -2,12 +2,9 @@ const mongoose = require("mongoose");
 const config = require("../../config/config");
 
 class DBContext {
-  connect() {
-    mongoose
-      .connect(
-        config.database.url
-        // , config.database.options
-      )
+  async connect() {
+    await mongoose
+      .connect(config.database.uri)
       .then(() => console.log("Connected to MongoDB"))
       .catch((err) => console.error("Database connection error:", err));
   }

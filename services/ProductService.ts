@@ -1,26 +1,36 @@
 const shopifyService = require("../generic/service/shopifyService");
 const { executeGraphqlQuery: executeProductGraphqlQuery } = require("../generic/service/graphQLService");
 
-//, query: "${JSON.stringify(filter)}", sortKey: ${sort.split(" ")[0]}, reverse: ${sort.split(" ")[1] === "desc"}
 class ProductService {
-  async getAllProducts(limit = 1, page = 2, filter = {}, sort = "created_at desc") {
+  async getAllProducts(limit = 1, pageCursor = "", filter = {}, sort = "CREATED_AT", reverse=true) {
 	const query = `
-	  {
-		 products(first: ${limit}) {
-			edges {
-			  node {
-				 id
-				 title
-				 createdAt
-			  }
-			}
-		 }
-	  }
-	`;
+    {
+      products(first: ${limit}, sortKey: ${sort}, reverse: ${reverse}, ${pageCursor ? `after: "${pageCursor}"` : ''}) {
+        edges {
+          cursor
+          node {
+            id
+            title
+            createdAt
+          }
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  `;
  
 	try {
 	  const data = await executeProductGraphqlQuery(query);
 	  console.log(data);
+	  const products = data.products.edges.map((edge:any) => edge.node);
+	  console.log(products);
+    const pageInfo = data.products.pageInfo;
+	 console.log(pageInfo);
 	  return data;
 	} catch (error) {
       console.error(error);
@@ -36,6 +46,7 @@ class ProductService {
   // 		  metafields
   // 	};
   //  }));
+
 
 //   async fetchLatestProducts(limit = 6) {
 //     try {

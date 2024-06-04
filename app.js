@@ -7,7 +7,7 @@ const checkOrigin = require("./middlewares/request-origin");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const authMiddleware = require("./middlewares/authMiddleware");
 const dbContext = require("./generic/database/dbContext");
-const config = require('./config/config');
+const config = require("./config/config");
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use(errorMiddleware);
 
 const start = async () => {
   try {
-    dbContext.connect();		
+    dbContext.connect();
     app.listen(config.server.port, () => {
       console.log(`Server is running on port ${config.server.port}`);
     });
