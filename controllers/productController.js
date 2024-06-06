@@ -4,6 +4,7 @@ class ProductController {
   async getProducts(req, res) {
     try {
       const products = await productService.getAllProducts();
+      // const products = await productService.fetchLatestProducts();
       res.json(products);
     } catch (error) {
       console.error(error);

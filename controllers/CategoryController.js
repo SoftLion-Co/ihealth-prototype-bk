@@ -11,6 +11,16 @@ class CategoryController {
     }
   }
 
+  async getSearchCategories(req, res) {
+	try {
+	  const categories = await categoryService.getSearchCategories(req.params.title);
+	  res.send(categories);
+	} catch (error) {
+	  console.error('Error fetching search categories:', error);
+	  res.status(500).send("Internal Server Error");
+	}
+ }
+
   async getCategoryById(req, res) {
     try {
       const category = await categoryService.getCategoryById(req.params.id);

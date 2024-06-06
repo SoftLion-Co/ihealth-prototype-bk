@@ -5,7 +5,7 @@ class CategoryService {
   async getAllCategories(page = 1, limit = 20) {
     try {
       const filter = {};
-      const sort = { created_at: -1 }; // Сортування за замовчуванням за датою створення у зворотному порядку
+      const sort = { created_at: -1 }; 
       const result = await dbContext.getAllData(Category.modelName, filter, page, limit, sort);
       return result;
     } catch (err) {
@@ -13,6 +13,16 @@ class CategoryService {
       throw err;
     }
   }
+
+  async getSearchCategories(title, limit = 8) {
+	try {
+	  const result = await dbContext.getDataByField(Category.modelName, 'subcategories.name', title, limit);
+	  return result;
+	} catch (err) {
+	  console.error('Error fetching categories:', err);
+	  throw err;
+	}
+ }
 
   async getCategoryById(id) {
     try {

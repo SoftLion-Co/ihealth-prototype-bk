@@ -10,7 +10,6 @@ const ReviewController = require("../controllers/ReviewController");
 const CommentController = require("../controllers/CommentController");
 const ProductController = require("../controllers/ProductController");
 const CategoryController = require("../controllers/CategoryController");
-const CertificateController = require("../controllers/CertificateController");
 const SubscriptionController = require("../controllers/SubscriptionController");
 
 router.get("/", (req, res) => {
@@ -51,7 +50,6 @@ router.delete("/comment/:id", CommentController.deleteComment);
 //Subscribe
 router.post("/newsletter/send", SubscriptionController.sendEmailNewsletter);
 router.post("/newsletter/receiver", SubscriptionController.addNewReceiver);
-
 //"/newsletter/contact-us"
 
 //Blogs
@@ -73,8 +71,6 @@ router.get("/product/:id", ProductController.getProductById);
 //Categories
 router.get("/category", CategoryController.getAllCategories);
 router.get("/category/:id", CategoryController.getCategoryById);
-
-//Certificates
-router.get("/certificate/:id", CertificateController.getCertificateById);
+router.get('/category/search/:title', CategoryController.getSearchCategories);
 
 module.exports = router;
