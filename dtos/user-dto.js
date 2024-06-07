@@ -1,7 +1,7 @@
 module.exports = class UserDto {
+  id;
   firstName;
   lastName;
-  id;
   email;
   isActivated;
 

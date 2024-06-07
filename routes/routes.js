@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 router.post(
   "/registration",
   body("email").isEmail(),
-  body("password").isString().isLength(6),
+  body("password").isString().isLength({ min: 6, max: 24 }),
   userController.registration
 );
 router.post("/login", userController.login);

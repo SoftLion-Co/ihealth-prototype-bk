@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/user-model");
+const ActivationModel = require("../models/activation-model");
+const Model = require("../models/user-model");
 const { v4 } = require("uuid");
 const mailService = require("./mailSenderService");
 const tokenService = require("./token-service");
@@ -7,6 +9,7 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../middlewares/api-error");
 const { default: axios } = require("axios");
 const qs = require("qs");
+const userModel = require("../models/user-model");
 
 class UserService {
   async edit(firstName, lastName, email, password, authType) {
@@ -20,7 +23,8 @@ class UserService {
         email,
         `${process.env.API_URL}/api/activate/${activationLink}`
       );
-    }}
+    }
+  }
 
   async registration(firstName, lastName, email, password, authType) {
     const candidate = await UserModel.findOne({ email });
@@ -40,25 +44,26 @@ class UserService {
       lastName,
       email,
       password: password ? bcrypt.hashSync(password, 10) : null,
-      activationLink: password ? activationLink : null,
-      isActivated: true,
+      isActivated: password ? false : true,
       authType,
     });
 
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await ActivationModel.create({ user: userDto.id, link: activationLink });
 
     return { ...tokens, user: userDto };
   }
 
   async activate(activationLink) {
-    const user = await UserModel.findOne({ activationLink: activationLink });
+    const link = await ActivationModel.findOne({ link: activationLink });
+    const user = await UserModel.findById(link?.user);
     if (!user) {
       throw ApiError.BadRequest("Invalid link");
     }
     user.isActivated = true;
-    user.activationLink = null;
+    await link?.deleteOne();
     await user.save();
   }
 
@@ -70,8 +75,7 @@ class UserService {
       );
     }
     const userDto = new UserDto(user);
-    if (password) {
-      //add data vavidation to endpoints
+    if (password && user.password) {
       if (!bcrypt.compareSync(password, user.password)) {
         throw ApiError.UnauthorizedError("Invalid password");
       }
