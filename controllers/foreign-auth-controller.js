@@ -1,9 +1,5 @@
 const { jwtDecode } = require("jwt-decode");
-<<<<<<< HEAD
-const UserService = require("../services/userService");
-=======
 const UserService = require("../services/user-service");
->>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232
 
 class ForeignAuth {
   async google(req, res, next) {
@@ -11,7 +7,7 @@ class ForeignAuth {
       const code = req.query.code;
       const token = await UserService.googleAuth(code);
       const { email, given_name, family_name } = jwtDecode(token);
-      const nickname = email.split("@")[0];
+      const nickname = `@${email}`
       const user = await UserService.getByEmail(nickname);
       let userData;
       if (!user) {

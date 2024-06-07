@@ -4,13 +4,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const router = require("./routes/routes");
 const checkOrigin = require("./middlewares/request-origin");
-<<<<<<< HEAD
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const authMiddleware = require("./middlewares/authMiddleware");
-=======
-const errorMiddleware = require("./middlewares/error-middleware");
-const authMiddleware = require("./middlewares/auth-middleware");
->>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232
 const dbContext = require("./generic/database/dbContext");
 const config = require('./config/config');
 

@@ -1,7 +1,6 @@
 const BlogService = require("../services/blogService");
 
 class BlogController {
-
   async getBlogById(req, res) {
     try {
       const blog = await BlogService.getBlogById(req.params.id);

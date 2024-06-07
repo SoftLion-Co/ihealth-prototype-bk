@@ -4,15 +4,9 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-<<<<<<< HEAD
-		"test": "echo \"Error: no test specified\"",
-		"start": "ts-node app.js",
-		"build": "tsc"
-=======
 	  "test": "echo \"Error: no test specified\"",
 	  "start": "ts-node app.js",
 	  "build": "tsc"
->>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232
 	},
 	"author": "",
 	"license": "ISC",
@@ -42,9 +36,5 @@
 		"nodemon": "^3.0.3",
 		"typescript": "^5.4.3"
 	}
-<<<<<<< HEAD
-}
-=======
  }
 
->>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232

@@ -1,10 +1,5 @@
 const { body } = require("express-validator");
-<<<<<<< HEAD
 const userController = require("../controllers/userController");
-const authMiddleware = require("../middlewares/authMiddleware");
-=======
-const userController = require("../controllers/user-controller");
->>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232
 const foreignAuthController = require("../controllers/foreign-auth-controller");
 const router = require("express").Router();
 
@@ -14,6 +9,7 @@ const ProductController = require("../controllers/productController");
 const CustomerController = require("../controllers/customerController");
 const CertificateController = require("../controllers/certificateController");
 const SubscriptionController = require("../controllers/subscriptionController"); 
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.get("/", (req, res) => {
 	res.send("Виберіть маршрут");
@@ -30,7 +26,7 @@ router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
-router.get("/users/:email", userController.getUsers);
+router.get("/users/:email", userController.getUsers, authMiddleware);
 router.get("/auth/google", foreignAuthController.google);
 router.get("/auth/github", foreignAuthController.github);
 
