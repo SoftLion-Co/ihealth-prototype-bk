@@ -1,6 +1,10 @@
 const { body } = require("express-validator");
+<<<<<<< HEAD
 const userController = require("../controllers/userController");
 const authMiddleware = require("../middlewares/authMiddleware");
+=======
+const userController = require("../controllers/user-controller");
+>>>>>>> b0641845632b081e2b9180501338b2b3e2e5d232
 const foreignAuthController = require("../controllers/foreign-auth-controller");
 const router = require("express").Router();
 
@@ -19,7 +23,7 @@ router.get("/", (req, res) => {
 router.post(
   "/registration",
   body("email").isEmail(),
-  body("password").isString().isLength(6),
+  body("password").isString().isLength({ min: 6, max: 24 }),
   userController.registration
 );
 router.post("/login", userController.login);
