@@ -14,6 +14,7 @@ async function executeGraphqlQuery(query) {
             body: JSON.stringify({ query }),
         });
         const data = await response.json();
+		  console.log(data);
         return data.data;
     } catch (error) {
         console.error('Error executing GraphQL query:', error);

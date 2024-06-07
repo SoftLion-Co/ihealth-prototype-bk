@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const SubcategorySchema = new Schema({
   name: String,
   productCount: Number,
+  displayName: String,
 });
 
 const CategorySchema = new Schema({
@@ -11,6 +12,7 @@ const CategorySchema = new Schema({
     required: true,
     unique: true,
   },
+  displayName: String,
   subcategories: [SubcategorySchema]
 });
 

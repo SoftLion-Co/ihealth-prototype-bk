@@ -16,7 +16,7 @@ class CategoryService {
 
   async getSearchCategories(title, limit = 8) {
 	try {
-	  const result = await dbContext.getDataByField(Category.modelName, 'subcategories.name', title, limit);
+	  const result = await dbContext.getDataByField('Category', 'subcategories.name', title, limit);
 	  return result;
 	} catch (err) {
 	  console.error('Error fetching categories:', err);
