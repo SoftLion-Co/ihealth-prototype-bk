@@ -1,4 +1,4 @@
-const subscriptionService = require("../services/subscriptionService");
+const subscriptionService = require("../services/SubscriptionService");
 
 class SubscriptionController {
   async sendEmailNewsletter(req, res) {

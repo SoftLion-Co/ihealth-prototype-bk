@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/userModel");
 const { v4 } = require("uuid");
-const mailService = require("./mailSenderService");
-const tokenService = require("./tokenService");
-const UserDto = require("../dtos/userDto");
+const mailService = require("./MailSenderService");
+const tokenService = require("./TokenService");
+const UserDto = require("../dtos/UserDto");
 const ApiError = require("../middlewares/apiError");
 const { default: axios } = require("axios");
 const qs = require("qs");
@@ -20,7 +20,8 @@ class UserService {
         email,
         `${process.env.API_URL}/api/activate/${activationLink}`
       );
-    }}
+    }
+  }
 
   async registration(firstName, lastName, email, password, authType) {
     const candidate = await UserModel.findOne({ email });
@@ -110,14 +111,14 @@ class UserService {
     const user = await UserModel.findOne({ email });
     return user;
   }
-  
+
   async googleAuth(code) {
     const url = "https://oauth2.googleapis.com/token";
     const values = {
       code,
       client_id: process.env.GOOGLE_CLIENT,
       client_secret: process.env.GOOGLE_KEY,
-      redirect_uri: "http://localhost:5000/api/auth/google",
+      redirect_uri: "http://localhost:3001/api/auth/google",
       grant_type: "authorization_code",
     };
     try {
@@ -161,4 +162,3 @@ class UserService {
 }
 
 module.exports = new UserService();
-

@@ -1,9 +1,6 @@
 const ShopifyService = require("../generic/service/shopifyService");
-const Order = require('../models/order');
 
 class OrderService {
-
-
 
   async listOrders(limit = 5) {
     try {
@@ -28,8 +25,6 @@ class OrderService {
   async createOrder(orderData) {
     try {
       const createdOrder = await ShopifyService.shopify.draftOrder.create(orderData);
-      const order = new Order(createdOrder);
-      await order.save();
       return createdOrder;
     } catch (error) {
       console.error(error);
@@ -43,9 +38,6 @@ class OrderService {
         orderId,
         updatedOrderData
       );
-      await Order.findOneAndUpdate({ orderId }, updatedOrderData, {
-        new: true,
-      });
       return updatedOrder;
     } catch (error) {
       console.error(error);
@@ -56,7 +48,6 @@ class OrderService {
   async deleteOrder(orderId) {
     try {
       await this.shopifyService.shopify.draftOrder.delete(orderId);
-      await Order.findOneAndDelete({ orderId });
       return "Order deleted successfully";
     } catch (error) {
       console.error("Error deleting order:", error);
