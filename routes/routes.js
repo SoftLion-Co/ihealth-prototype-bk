@@ -67,6 +67,7 @@ router.delete("/order/:id", OrderController.deleteOrder);
 //Products
 router.get("/product", ProductController.getProducts);
 router.get("/product/:id", ProductController.getProductById);
+router.get("/products/search/:title", ProductController.getProductsByTitle);
 
 //Categories
 router.get("/category", CategoryController.getAllCategories);

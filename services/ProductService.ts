@@ -70,60 +70,106 @@ class ProductService {
   async getAllProducts(
     limit = 24,
     pageCursor = "",
-    filter = {},
+    tags = "",
+    productType = "",
+    minPrice = "0.00",
+    maxPrice = "0.00",
+    vendor = "",
+    options1 = "Weight",
+    options = ["1", "2", "3"],
     sort = "CREATED_AT",
     reverse = true
   ) {
-    const query = `
-    {
-      products(first: ${limit}, sortKey: ${sort}, reverse: ${reverse}, ${
-      pageCursor ? `after: "${pageCursor}"` : ""
-    }) {
-        edges {
-          node {
-            id
-            title
-            createdAt
-				handle
-				 variants(first: 1) {
-              edges {
-                node {
-                  price
-                }
-              }
-            }
-          }
-        }
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
-        }
-      }
+    const sort1 = ["CREATED_AT", "PRICE", "BEST_SELLING", "TITLE"];
+    const reverse1 = [true, false];
+
+    const filterQueries = [];
+    let queryString = "";
+    if (tags != "") filterQueries.push(`tag:${tags}`);
+    if (productType != "") filterQueries.push(`product_type:${productType}`);
+    //  if (maxPrice != "" && minPrice != "") filterQueries.push(`variants.price:>=${minPrice}`);
+    if (vendor != "") filterQueries.push(`vendor:${vendor}`);
+    //  if (options) filterQueries.push(`options.name:${options1}`);
+
+    if (filterQueries.length != 0) {
+      queryString = filterQueries.length
+        ? `query: "${filterQueries.join(" ")}"`
+        : "";
+      console.log(queryString);
     }
-  `;
+
+    const query = `
+	{
+	  products(first: ${limit}, sortKey: ${sort}, reverse: ${reverse}${
+      pageCursor ? `, after: "${pageCursor}"` : ""
+    }${queryString ? `, ${queryString}` : ""}) {
+		 edges {
+			node {
+			  id
+			  title
+			  description
+			  createdAt
+			  handle
+			  vendor
+			  tags
+			  productType
+			  variants(first: 30) {
+				 edges {
+					node {
+					  price
+					}
+				 }
+			  }
+			  priceRangeV2 {
+				 minVariantPrice {
+					amount
+					currencyCode
+				 }
+				 maxVariantPrice {
+					amount
+					currencyCode
+				 }
+			  }
+			  images(first: 1, sortKey: POSITION) {
+				 edges {
+					node {
+					  src
+					}
+				 }
+			  }
+			  options {
+				 name
+				 values
+			  }
+			}
+		 }
+		 pageInfo {
+			hasNextPage
+			hasPreviousPage
+			startCursor
+			endCursor
+		 }
+	  }
+	}
+ `;
 
     try {
       const data = await executeProductGraphqlQuery(query);
-      // console.log(data);
-      const products = data.products.edges.map((edge: any) => edge.node);
-      console.log(products);
-
-      const pageInfo = data.products.pageInfo;
+      // const products = data.products.edges.map((edge: any) => edge.node);
+      // console.log(products);
+      // const pageInfo = data.products.pageInfo;
       // console.log(pageInfo);
-      return products;
+      return data;
     } catch (error) {
       console.error(error);
       throw error;
     }
   }
 
-  async fetchLatestProducts(title = "GymBeam", limit = 4) {
+  async getSearchProducts(title = "", limit = 4) {
     try {
-      // const data = ShopifyService.shopify.product.list();
       const query = `
-		{
+		 {
       products(first: ${limit}, query: "title:*${title}*") {
         edges {
           node {
@@ -192,6 +238,11 @@ class ProductService {
       console.error(error);
       throw error;
     }
+  }
+  
+  async getProductTest() {
+	  const data = ShopifyService.shopify.product.list();
+		return data;
   }
 }
 
