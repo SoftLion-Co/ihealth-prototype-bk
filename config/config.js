@@ -9,14 +9,17 @@ module.exports = {
 
   database: {
     url: process.env.DB_URL,
+	 uri: process.env.DB_URI,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+	 mongoUri:process.env.MONGO_URI,
   },
 
   shopify: {
     shopName: process.env.SHOP_NAME,
     apiKey: process.env.API_KEY,
-    password: process.env.PASSWORD,
+    apiSecretKey: process.env.API_SECRET_KEY,
+	 password: process.env.API_ACCESS_TOKEN
   },
 
   smtp: {

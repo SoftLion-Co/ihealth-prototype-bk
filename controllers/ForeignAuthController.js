@@ -1,5 +1,5 @@
 const { jwtDecode } = require("jwt-decode");
-const UserService = require("../services/userService");
+const UserService = require("../services/UserService");
 
 class ForeignAuth {
   async google(req, res, next) {

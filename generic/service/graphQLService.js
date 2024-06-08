@@ -13,13 +13,8 @@ async function executeGraphqlQuery(query) {
             },
             body: JSON.stringify({ query }),
         });
-
         const data = await response.json();
-
-        if (data.errors) {
-            throw new Error(data.errors[0].message);
-        }
-
+		  console.log(data);
         return data.data;
     } catch (error) {
         console.error('Error executing GraphQL query:', error);

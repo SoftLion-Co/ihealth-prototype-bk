@@ -1,4 +1,4 @@
-const BlogService = require("../services/blogService");
+const BlogService = require("../services/BlogService");
 
 class BlogController {
 
@@ -21,6 +21,16 @@ class BlogController {
       res.status(500).send("Internal Server Error");
     }
   }
+
+  async getLatestBlogPosts(req, res) {
+	try {
+	  const blogs = await BlogService.getLatestBlogPosts();
+	  res.send(blogs);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send("Internal Server Error");
+	}
+ }
 }
 
 const blogController = new BlogController();

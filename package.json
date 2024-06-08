@@ -6,7 +6,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\"",
 		"start": "ts-node app.js",
-		"build": "tsc"
+		"build": "tsc",
+		"migrate-up": "npx migrate-mongo up",
+		"migrate-down": "npx migrate-mongo down"
 	},
 	"author": "",
 	"license": "ISC",

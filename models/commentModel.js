@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema({
-  id: String,
+	blog_post_id:String,
   name:String,
   created_at: Date,
-  email: Number,
+  email: String,
   text: String
 });
 
-module.exports = model('comment', commentSchema);
+module.exports = model('Comment', commentSchema, 'Comment');
