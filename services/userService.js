@@ -1,12 +1,14 @@
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/userModel");
 const { v4 } = require("uuid");
-const mailService = require("./mailSenderService");
-const tokenService = require("./tokenService");
-const UserDto = require("../dtos/userDto");
+const mailService = require("./MailSenderService");
+const tokenService = require("./TokenService");
+const UserDto = require("../dtos/UserDto");
 const ApiError = require("../middlewares/apiError");
 const { default: axios } = require("axios");
 const qs = require("qs");
+const shopifyService = require("../generic/service/shopifyService");
+const customerService = require("./customerService");
 
 class UserService {
   async edit(firstName, lastName, email, password, authType) {
@@ -20,27 +22,32 @@ class UserService {
         email,
         `${process.env.API_URL}/api/activate/${activationLink}`
       );
-    }}
+    }
+  }
 
   async registration(firstName, lastName, email, password, authType) {
     const candidate = await UserModel.findOne({ email });
     if (candidate) {
       throw ApiError.BadRequest(`User with email ${email} already exists`);
     }
-    const activationLink = v4();
+    const shopifyId = await customerService.createCustomer({
+      first_name: email,
+    });
+    /*     const activationLink = v4();
     if (password) {
       await mailService.sendActivationMail(
         email,
         `${process.env.API_URL}/api/activate/${activationLink}`
       );
-    }
+    } */
 
     const user = await UserModel.create({
       firstName,
       lastName,
+      shopifyId: 45,
       email,
       password: password ? bcrypt.hashSync(password, 10) : null,
-      activationLink: password ? activationLink : null,
+      activationLink: password ? "activationLink" : null,
       isActivated: true,
       authType,
     });
@@ -110,7 +117,7 @@ class UserService {
     const user = await UserModel.findOne({ email });
     return user;
   }
-  
+
   async googleAuth(code) {
     const url = "https://oauth2.googleapis.com/token";
     const values = {
@@ -161,4 +168,3 @@ class UserService {
 }
 
 module.exports = new UserService();
-

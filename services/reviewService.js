@@ -1,54 +1,78 @@
-const Review = require('./models/review');
+const dbContext = require('../generic/database/dbContext');
+const Review = require('../models/reviewModel');
 
 class ReviewService {
-  async listReviews(limit = 5) {
+
+	async getReviewsByProductId(productId, limit = 10, page = 1) {
+		try {
+		  const filter = { product_id: productId };
+		  const sort = { created_at: -1 };
+		  const result = await dbContext.getAllData(Review.modelName, filter, page, limit, sort);
+		  return result;
+		} catch (err) {
+		  console.error(`Error fetching reviews for product ${productId}:`, err);
+		  throw err;
+		}
+	 }
+
+  async listReviews(limit = 10, page = 1) {
     try {
-      const reviews = await Review.find().limit(limit);
-      return reviews;
-    } catch (error) {
-      console.error(error);
-      throw error;
+      const filter = {};
+      const sort = { created_at: -1 };
+      const result = await dbContext.getAllData(Review.modelName, filter, page, limit, sort);
+      return result;
+    } catch (err) {
+      console.error('Error fetching reviews:', err);
+      throw err;
     }
   }
 
   async getReviewById(reviewId) {
     try {
-      const review = await Review.findById(reviewId);
+      const review = await dbContext.getDataById(Review.modelName, reviewId);
+      if (!review) {
+        throw new Error('Review not found');
+      }
       return review;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (err) {
+      console.error(`Error fetching review ${reviewId}:`, err);
+      throw err;
     }
   }
 
   async createReview(reviewData) {
     try {
-      const newReview = new Review(reviewData);
-      const savedReview = await newReview.save();
-      return savedReview;
-    } catch (error) {
-      console.error(error);
-      throw error;
+      const review = await dbContext.createData(Review.modelName, reviewData);
+      return review;
+    } catch (err) {
+      console.error('Error creating review:', err);
+      throw err;
     }
   }
 
   async updateReview(reviewId, updatedData) {
     try {
-      const updatedReview = await Review.findByIdAndUpdate(reviewId, updatedData, { new: true });
+      const updatedReview = await dbContext.updateData(Review.modelName, reviewId, updatedData);
+      if (!updatedReview) {
+        throw new Error('Review not found');
+      }
       return updatedReview;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (err) {
+      console.error(`Error updating review ${reviewId}:`, err);
+      throw err;
     }
   }
 
   async deleteReview(reviewId) {
     try {
-      const deletedReview = await Review.findByIdAndDelete(reviewId);
+      const deletedReview = await dbContext.deleteData(Review.modelName, reviewId);
+      if (!deletedReview) {
+        throw new Error('Review not found');
+      }
       return deletedReview;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (err) {
+      console.error(`Error deleting review ${reviewId}:`, err);
+      throw err;
     }
   }
 }
