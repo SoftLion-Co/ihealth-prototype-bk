@@ -11,6 +11,7 @@ const CommentController = require("../controllers/CommentController");
 const ProductController = require("../controllers/ProductController");
 const CategoryController = require("../controllers/CategoryController");
 const SubscriptionController = require("../controllers/SubscriptionController");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.get("/", (req, res) => {
   res.send("Виберіть маршрут");
@@ -18,18 +19,18 @@ router.get("/", (req, res) => {
 
 //Authentification
 router.post(
-  "/registration",
+  "/api/registration",
   body("email").isEmail(),
   body("password").isString().isLength({ min: 6, max: 24 }),
   UserController.registration
 );
-router.post("/login", UserController.login);
-router.post("/logout", UserController.logout);
-router.get("/activate/:link", UserController.activate);
-router.get("/refresh", UserController.refresh);
-router.get("/users/:email", UserController.getUsers);
-router.get("/auth/google", ForeignAuthController.google);
-router.get("/auth/github", ForeignAuthController.github);
+router.post("/api/login", UserController.login);
+router.post("/api/logout", UserController.logout);
+router.get("/api/activate/:link", UserController.activate);
+router.get("/api/refresh", UserController.refresh);
+router.get("/api/users/:email", UserController.getUsers, authMiddleware);
+router.get("/api/auth/google", ForeignAuthController.google);
+router.get("/api/auth/github", ForeignAuthController.github);
 
 // Review
 router.get("/review", ReviewController.listReviews);
@@ -71,6 +72,6 @@ router.get("/product/:id", ProductController.getProductById);
 //Categories
 router.get("/category", CategoryController.getAllCategories);
 router.get("/category/:id", CategoryController.getCategoryById);
-router.get('/category/search/:title', CategoryController.getSearchCategories);
+router.get("/category/search/:title", CategoryController.getSearchCategories);
 
 module.exports = router;

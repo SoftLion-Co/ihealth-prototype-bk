@@ -4,7 +4,7 @@ const config = require("../../config/config");
 class DBContext {
   async connect() {
     await mongoose
-      .connect(config.database.uri)
+      .connect(config.database.url)
       .then(() => console.log("Connected to MongoDB"))
       .catch((err) => console.error("Database connection error:", err));
   }
@@ -20,44 +20,44 @@ class DBContext {
     }
   }
 
-  async getDataByField(model, field, value, limit=100) {
-	try {
-		const Model = mongoose.model(model);
-		const query = {};
-		query[field] = { $regex: new RegExp(value, 'i') }; 
-		// const data = await Category.aggregate([
-		// 	{
-		// 		$match: {
-		// 			$or: [
-		// 				{ 'name': { $regex: new RegExp(title, 'i') } },
-		// 				{ 'subcategories.name': { $regex: new RegExp(title, 'i') } }
-		// 			]
-		// 		}
-		// 	},
-		// 	{
-		// 		$project: {
-		// 			_id: 1,
-		// 			name: 1,
-		// 			subcategories: {
-		// 				$filter: {
-		// 					input: '$subcategories',
-		// 					as: 'subcategory',
-		// 					cond: { $regexMatch: { input: '$$subcategory.name', regex: new RegExp(title, 'i') } }
-		// 				}
-		// 			}
-		// 		}
-		// 	},
-		// 	{
-		// 		$limit: limit
-		// 	}
-		// ]);
-		const data = await Model.find(query).limit(limit);
-		return data;
-	 } catch (err) {
-		console.error(`Error retrieving data from ${model} by ${field}:`, err);
-		throw err;
-	 }
- }
+  async getDataByField(model, field, value, limit = 100) {
+    try {
+      const Model = mongoose.model(model);
+      const query = {};
+      query[field] = { $regex: new RegExp(value, "i") };
+      // const data = await Category.aggregate([
+      // 	{
+      // 		$match: {
+      // 			$or: [
+      // 				{ 'name': { $regex: new RegExp(title, 'i') } },
+      // 				{ 'subcategories.name': { $regex: new RegExp(title, 'i') } }
+      // 			]
+      // 		}
+      // 	},
+      // 	{
+      // 		$project: {
+      // 			_id: 1,
+      // 			name: 1,
+      // 			subcategories: {
+      // 				$filter: {
+      // 					input: '$subcategories',
+      // 					as: 'subcategory',
+      // 					cond: { $regexMatch: { input: '$$subcategory.name', regex: new RegExp(title, 'i') } }
+      // 				}
+      // 			}
+      // 		}
+      // 	},
+      // 	{
+      // 		$limit: limit
+      // 	}
+      // ]);
+      const data = await Model.find(query).limit(limit);
+      return data;
+    } catch (err) {
+      console.error(`Error retrieving data from ${model} by ${field}:`, err);
+      throw err;
+    }
+  }
 
   async getAllData(model, filter = {}, page = 1, limit = 20, sort = {}) {
     try {

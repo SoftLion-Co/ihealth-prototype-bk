@@ -1,5 +1,5 @@
 const Shopify = require("shopify-api-node");
-const config = require('../../config/config');
+const config = require("../../config/config");
 
 class ShopifyService {
   constructor() {

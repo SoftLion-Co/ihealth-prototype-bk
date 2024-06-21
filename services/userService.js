@@ -7,6 +7,8 @@ const UserDto = require("../dtos/UserDto");
 const ApiError = require("../middlewares/apiError");
 const { default: axios } = require("axios");
 const qs = require("qs");
+const shopifyService = require("../generic/service/shopifyService");
+const customerService = require("./customerService");
 
 class UserService {
   async edit(firstName, lastName, email, password, authType) {
@@ -28,20 +30,24 @@ class UserService {
     if (candidate) {
       throw ApiError.BadRequest(`User with email ${email} already exists`);
     }
-    const activationLink = v4();
+    const shopifyId = await customerService.createCustomer({
+      first_name: email,
+    });
+    /*     const activationLink = v4();
     if (password) {
       await mailService.sendActivationMail(
         email,
         `${process.env.API_URL}/api/activate/${activationLink}`
       );
-    }
+    } */
 
     const user = await UserModel.create({
       firstName,
       lastName,
+      shopifyId: 45,
       email,
       password: password ? bcrypt.hashSync(password, 10) : null,
-      activationLink: password ? activationLink : null,
+      activationLink: password ? "activationLink" : null,
       isActivated: true,
       authType,
     });
@@ -118,7 +124,7 @@ class UserService {
       code,
       client_id: process.env.GOOGLE_CLIENT,
       client_secret: process.env.GOOGLE_KEY,
-      redirect_uri: "http://localhost:3001/api/auth/google",
+      redirect_uri: "http://localhost:5000/api/auth/google",
       grant_type: "authorization_code",
     };
     try {

@@ -8,6 +8,7 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const authMiddleware = require("./middlewares/authMiddleware");
 const dbContext = require("./generic/database/dbContext");
 const config = require("./config/config");
+const customerService = require("./services/customerService");
 
 const app = express();
 

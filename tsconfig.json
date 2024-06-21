@@ -7,6 +7,6 @@
  			  "skipLibCheck": true,
  			  "forceConsistentCasingInFileNames": true
  			},
- 			"include": ["services/**/*.ts"],
+ 			"include": ["services/**/*.ts", "services/customerService.js"],
  		   "exclude": ["node_modules"]
  }
